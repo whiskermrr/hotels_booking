@@ -1,0 +1,23 @@
+{% extends 'booking/base.html' %}
+
+{%  block body %}
+
+    {% if hotels %}
+        {% for hotel in hotels %}
+            <ul>
+                <li><h2>{{ hotel.name }}</h2></li>
+                <li>{{ hotel.star_rating }}</li>
+                <li>{{ hotel.address }}</li>
+                <li>{{ hotel.city }}</li>
+                <li>{{ hotel.country_code }}</li>
+                <li>{{ hotel.email }}</li>
+                <li>{{ hotel.phone_number }}</li>
+                <li><a href="{{ hotel.url }}">Hotel's site</a> </li>
+                <br><br>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <h2>There is no hotels in database</h2>
+    {% endif %}
+
+{% endblock %}
