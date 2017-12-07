@@ -28,7 +28,7 @@ def hotel_detail(request, hotel_id):
     return render(request, 'booking/hotel_detail.html', context)
 
 
-def user_add(request):
+def register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         if user_form.is_valid():
