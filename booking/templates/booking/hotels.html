@@ -4,8 +4,8 @@
 
     {% if hotels %}
         {% for hotel in hotels %}
+            <a href="{% url 'booking:hotel_detail' hotel.id %}"><h2>{{ hotel.name }}</h2></a>
             <ul>
-                <li><h2>{{ hotel.name }}</h2></li>
                 <li>{{ hotel.star_rating }}</li>
                 <li>{{ hotel.address }}</li>
                 <li>{{ hotel.city }}</li>
@@ -13,7 +13,8 @@
                 <li>{{ hotel.email }}</li>
                 <li>{{ hotel.phone_number }}</li>
                 <li><a href="{{ hotel.url }}">Hotel's site</a> </li>
-                <br><br>
+                <br>
+
             </ul>
         {% endfor %}
     {% else %}

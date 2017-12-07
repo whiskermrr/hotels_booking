@@ -1,7 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'booking/base.html' %}
 
 {% block body %}
 
+    <ul>
+        <li><h1>{{ hotel.name }}</h1></li>
+        <li>{{ hotel.star_rating }}</li>
+        <li>{{ hotel.address }}</li>
+        <li>{{ hotel.city }}</li>
+        <li>{{ hotel.country_code }}</li>
+        <li>{{ hotel.email }}</li>
+        <li>{{ hotel.phone_number }}</li>
+    </ul>
 
+    {% if rooms %}
+        {% for room in rooms %}
+            <ul>
+                <li><h3>{{ room.room_type.room_type }}</h3></li>
+                <li>{{ room.room_type.room_standard }}</li>
+                <li>{{ room.room_type.description }}</li>
+                <li>Smoking: {% if room.smoking_in %} Yes {% else %} No {% endif %}</li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <h3>No rooms!</h3>
+    {% endif %}
 
 {% endblock %}

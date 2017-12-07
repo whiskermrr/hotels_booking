@@ -5,10 +5,10 @@ from smart_selects.db_fields import ChainedForeignKey
 
 
 class User(models.Model):
-    name = models.CharField(max_length=30)
-    surname = models.CharField(max_length=50)
-    address = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
+    name = models.CharField(max_length=30, blank=False, null=False)
+    surname = models.CharField(max_length=50, blank=False, null=False)
+    address = models.CharField(max_length=100, blank=False, null=False)
+    email = models.EmailField(max_length=100, blank=False, null=False)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Phone number must be entered in the format: '+999999999'")
     phone_number = models.CharField(max_length=20, validators=[phone_regex])
@@ -98,7 +98,7 @@ class Room(models.Model):
 
 class Booking(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_mrr')
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     room = ChainedForeignKey(
         Room,
         chained_field="hotel",
@@ -115,7 +115,7 @@ class Booking(models.Model):
         return "%s %s %s %s %s %s" % (
             self.description,
             self.guest.__str__(),
-            self.hotel.__str__(),
+            self.hotel_id.__str__(),
             self.room.__str__(),
             self.start_date,
             self.end_date,

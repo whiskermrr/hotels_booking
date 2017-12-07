@@ -1,0 +1,21 @@
+{% extends 'booking/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-md-4">
+
+      <h1>Registration</h1>
+      <br>
+
+    <form action="POST">
+        {{ user_form|crispy }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-plus"></span>Register</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
