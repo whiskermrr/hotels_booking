@@ -3,3 +3,10 @@
     text-align: center;
 }
 
+.imageCarousel img
+{
+    width: auto;
+    height 320px;
+    max-height: 320px;
+}
+

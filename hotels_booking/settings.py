@@ -36,6 +36,12 @@ INSTALLED_APPS = [
     #my apps
     'booking',
 
+    #3th part apps
+    'smart_selects',
+    'crispy_forms',
+    'django_countries',
+    'registration',
+
     #django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,11 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
-    #3th part apps
-    'smart_selects',
-    'crispy_forms',
-    'django_countries',
+
 ]
 
 MIDDLEWARE = [
@@ -127,6 +131,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/booking/'
 
 
 # Static files (CSS, JavaScript, Images)

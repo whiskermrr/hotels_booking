@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 
+    <script src="https://use.fontawesome.com/1598e5e6aa.js"></script>
+
     {% load staticfiles %}
     <meta charset="UTF-8">
     <title>{% block title %} BookIt {% endblock %}</title>
@@ -10,6 +12,10 @@
 
     <style>
         {% block style %}
+            .navbar-inverse
+            {
+                background-color: #003580;
+            }
         {% endblock %}
     </style>
 
@@ -26,7 +32,7 @@
         {% endblock %}
 
         <div id="content">
-            {% block body %}
+            {% block content %}
             {% endblock %}
         </div>
 

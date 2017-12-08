@@ -1,5 +1,15 @@
 {% extends 'booking/base.html' %}
 
+<style>
+{% block style %}
+{{ block.super }}
+.jumbotron
+{
+    background-color: #febb02;
+}
+{% endblock %}
+</style>
+
 {% block jumbotron_content %}
 
         <div class="jumbotron">
