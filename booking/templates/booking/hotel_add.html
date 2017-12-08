@@ -1,26 +1,26 @@
 {% extends 'booking/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-<form id="post_form" method="post" action=""
-      enctype="multipart/form-data">
+<div class="row">
+  <div class="col-md-4 col-sm-offset-4">
 
-    {% csrf_token %}
-    {% for hidden in hotelForm.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
+    <form id="post_form" method="post" action=""
+          enctype="multipart/form-data">
+        {{ hotelForm|crispy }}
+        {% csrf_token %}
 
-    {% for field in hotelForm %}
-        {{ field }} <br />
-    {% endfor %}
-
-    {{ formset.management_form }}
-    {% for form in formset %}
-        {{ form }}
-    {% endfor %}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form }}
+        {% endfor %}
 
 
-    <input type="submit" name="submit" value="Submit" />
-</form>
+        <input type="submit" name="submit" value="Submit" />
+    </form>
+
+  </div>
+</div>
 
 {% endblock %}

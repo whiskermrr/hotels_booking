@@ -22,9 +22,12 @@ def index(request):
 def hotel_detail(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
     rooms = Room.objects.filter(hotel=hotel_id)
+    images = Image.objects.filter(hotel=hotel_id)
+    image = images[0]
     context = {
         'hotel' : hotel,
-        'rooms' : rooms
+        'rooms' : rooms,
+        'image' : image,
     }
     return render(request, 'booking/hotel_detail.html', context)
 

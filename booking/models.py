@@ -131,4 +131,4 @@ class Payment(models.Model):
 class Image(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, null=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
-    image = models.ImageField(upload_to='static/images')
+    image = models.ImageField(upload_to='media/images')

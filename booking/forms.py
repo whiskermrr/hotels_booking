@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
 class HotelForm(forms.ModelForm):
     class Meta:
         model = Hotel
-        fields = ('hotel_chain', 'country_code', 'name', 'email', 'address', 'city', 'email', 'phone_number', 'url')
+        fields = ('hotel_chain', 'country_code', 'name', 'email', 'address', 'city', 'email', 'phone_number', 'star_rating', 'url')
 
 
 class ImageForm(forms.ModelForm):

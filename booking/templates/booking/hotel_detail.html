@@ -1,7 +1,34 @@
 {% extends 'booking/base.html' %}
 
+{% block style %}
+
+.image_mrr
+{
+    float: left;
+    padding: 10px;
+}
+
+.hotel_details
+{
+    float:left;
+    padding: 10px;
+}
+
+.rooms
+{
+    clear: both;
+    padding: 10px;
+}
+
+{% endblock %}
+
 {% block content %}
 
+<div class="image_mrr">
+   <a> <img src="{{ image.image.url }}"> </a>
+</div>
+
+<div class="hotel_details">
     <ul>
         <li><h1>{{ hotel.name }}</h1></li>
         <li>{{ hotel.star_rating }}</li>
@@ -9,9 +36,12 @@
         <li>{{ hotel.city }}</li>
         <li>{{ hotel.country_code }}</li>
         <li>{{ hotel.email }}</li>
+        <li><a href="{{ hotel.url }}">Hotel's site</a> </li>
         <li>{{ hotel.phone_number }}</li>
     </ul>
+</div>
 
+<div class="rooms">
     {% if rooms %}
         {% for room in rooms %}
             <ul>
@@ -24,5 +54,6 @@
     {% else %}
         <h3>No rooms!</h3>
     {% endif %}
+</div>
 
 {% endblock %}
