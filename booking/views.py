@@ -1,3 +1,4 @@
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .forms import *
@@ -26,6 +27,35 @@ def hotel_detail(request, hotel_id):
         'rooms' : rooms
     }
     return render(request, 'booking/hotel_detail.html', context)
+
+
+def hotel_add(request):
+    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=3)
+
+    if request.method == 'POST':
+        hotelForm = HotelForm(request.POST)
+        formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
+
+        if hotelForm.is_valid() and formset.is_valid():
+            hotel_form = hotelForm.save(commit=False)
+            hotel_form.save()
+
+            for form in formset.cleaned_data:
+                image = form['image']
+                photo = Image(hotel=hotel_form, image=image)
+                photo.save()
+
+            hotels = Hotel.objects.all()
+            return render(request, 'booking/hotels.html', {'hotels' : hotels})
+
+        else:
+            print (hotelForm.errors, formset.errors)
+
+    else:
+        hotelForm = HotelForm()
+        formset = ImageFormSet(queryset=Image.objects.none())
+        context = {'hotelForm' : hotelForm, 'formset' : formset}
+        return render(request, 'booking/hotel_add.html', context)
 
 
 def register(request):

@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^hotels$', views.hotels, name='hotels'),
     url(r'^(?P<hotel_id>[0-9]+)/$', views.hotel_detail, name='hotel_detail'),
     url(r'^register$', views.register, name='register'),
+    url(r'^hotels/add$', views.hotel_add, name='hotel_add'),
 ]

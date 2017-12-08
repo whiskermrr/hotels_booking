@@ -126,3 +126,9 @@ class Payment(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
     amount = models.FloatField(validators=[MinValueValidator(0)])
     date = models.DateField(auto_now_add=True)
+
+
+class Image(models.Model):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, null=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='static/images')
