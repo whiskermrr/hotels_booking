@@ -1,6 +1,7 @@
 {% extends 'booking/base.html' %}
 
 {% block style %}
+{{ block.super }}
 
 img {
     max-width: 100%;
@@ -113,7 +114,7 @@ img {
                         <img src="{{ room.avatar.url }}">
                     </div>
                     <div class="col-lg-5">
-                        <h4>Room Type: {{ room.room_type.room_type }}</h4>
+                        <h4>Type: {{ room.room_type.room_type }}</h4>
                         <h4>{{ room.room_type.room_standard }}</h4>
                         <h4>Smoking: {% if room.room_type.smoking_in %} Yes {% else %} No {% endif %}</h4>
                     </div>
@@ -126,6 +127,7 @@ img {
             </div>
 
             <div class="empty-div">
+                <hr/>
             </div>
         {% endfor %}
     {% else %}

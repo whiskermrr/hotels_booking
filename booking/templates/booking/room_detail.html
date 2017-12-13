@@ -1,0 +1,43 @@
+{% extends 'booking/base.html' %}
+
+{% block style %}
+{{ block.super }}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.room_image
+{
+    width: 600px;
+    min-height: 120px;
+    max-height: auto;
+    float: left;
+    padding: 10px;
+}
+
+.details
+{
+    float:left;
+    padding: 10px;
+    padding-left: 40px;
+}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="room_image">
+            <a> <img src="{{ room.avatar.url }}"> </a>
+        </div>
+
+<div class="details">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Type: {{ room.room_type.room_type }}</h3>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -35,7 +35,14 @@ def hotel_detail(request, hotel_id):
 
 #need to be doneS
 def room_detail(request, room_id):
-    return render(request, 'booking/index.html', {})
+    room = get_object_or_404(Room, id=room_id)
+    images = Image.objects.filter(room=room_id)
+    image = images[0]
+    context = {
+        'room' : room,
+        'image': image,
+    }
+    return render(request, 'booking/room_detail.html', context)
 
 
 
