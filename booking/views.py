@@ -136,21 +136,42 @@ def room_bookit(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     hotel = get_object_or_404(Hotel, id=room.hotel.id)
 
-    if request.method == 'POST':
-        bookingForm = BookingForm(request.POST)
-        if bookingForm.is_valid():
-            booking_form = bookingForm.save(commit=False)
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            bookingForm = BookingForm(request.POST)
+            if bookingForm.is_valid():
+                booking_form = bookingForm.save(commit=False)
+                #date validations goes here
+                booking_form.guest = request.user
+                booking_form.room = room
+                booking_form.hotel = hotel
+                booking_form.save()
 
-            booking_form.guest = request.user
-            booking_form.room = room
-            booking_form.hotel = hotel
-            booking_form.save()
+                return render(request, 'booking/user_profile.html', {'user': request.user})
 
-            return render(request, 'booking/user_profile.html', {'user': request.user})
+            else:
+                title = 'Invalid Form!'
+                bookingForm = BookingForm(initial={'hotel': hotel.id})
+                context = {
+                    'bookingForm': bookingForm,
+                    'title': title,
+                    'hotel': hotel,
+                    'room': room,
+                }
+                return render(request, 'booking/room_bookit.html', context)
 
-    else:
-        bookingForm = BookingForm(initial={'hotel' : hotel.id})
-        return render(request, 'booking/room_bookit.html', {'bookingForm': bookingForm})
+        else:
+            title = 'Almost Done!'
+            bookingForm = BookingForm(initial={'hotel' : hotel.id})
+            context = {
+                'bookingForm': bookingForm,
+                'title': title,
+                'hotel': hotel,
+                'room': room,
+            }
+            return render(request, 'booking/room_bookit.html', {'bookingForm': bookingForm, 'title' : title})
+
+    return redirect('auth_login')
 
 
 

@@ -97,7 +97,7 @@ class Room(models.Model):
     description = models.CharField(max_length=400)
 
     def __str__(self):
-        return "{}".format(self.room_type.__str__())
+        return "{} {}".format(self.price.__str__(), self.room_type.__str__())
 
 
 class Booking(models.Model):
