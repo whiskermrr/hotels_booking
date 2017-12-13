@@ -33,7 +33,7 @@ img {
 .room_image
 {
     width: 300px;
-    min-height: 70px;
+    min-height: 100px;
     max-height: auto;
     float: left;
     padding: 10px;
@@ -105,28 +105,27 @@ img {
     {% if rooms %}
     <h1>Hotel's Rooms</h1>
         {% for room in rooms %}
-            <div class="room_image">
-                <img src="{{ room.avatar.url }}">
-            </div>
-
-            <div class="room_details">
+            <div class="container">
 
                 <div class="row">
-                    <div class="col-md-9">
+
+                    <div class="room_image">
+                        <img src="{{ room.avatar.url }}">
+                    </div>
+                    <div class="col-lg-5">
                         <h4>Room Type: {{ room.room_type.room_type }}</h4>
                         <h4>{{ room.room_type.room_standard }}</h4>
                         <h4>Smoking: {% if room.room_type.smoking_in %} Yes {% else %} No {% endif %}</h4>
                     </div>
 
-                    <div class="col-md-3" style="text-align: center;">
+                    <div class="col-lg-3" style="text-align: center;">
                         <h2>${{ room.price }}</h2>
                         <a class="btn btn-lg btn-primary" href="{% url 'booking:room_detail' room.id %}" role="button">View Details</a>
                     </div>
                 </div>
             </div>
-
+    
             <div class="empty-div">
-
             </div>
         {% endfor %}
     {% else %}
