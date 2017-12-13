@@ -1,31 +1,45 @@
 {% extends 'booking/base.html' %}
 
+{% block style %}
+
+.custom-btn
+{
+    padding: 10px;
+}
+
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
+{% if request.user.is_authenticated %}
+
   <div class="row">
-    <div class="col-sm-3 col-lg-2">
-      <nav class="navbar navbar-default navbar-fixed-side">
+    <div class="col-sm-4 col-lg-3">
+      <nav class="navbar navbar-default navbar-fixed-side" style="text-align: center;">
 
           <p><a href="{% url 'auth_password_change' %}">Change Password</a></p>
           <p><a href="{% url 'auth_password_change' %}">Bookings</a></p>
           <p><a href="{% url 'auth_password_change' %}">Payments</a></p>
-          <p><a href="{% url 'auth_password_change' %}">Comments</a></p>
+          <p><a href="{% url 'auth_password_change' %}">Messages</a></p>
 
       </nav>
     </div>
-    <div class="col-sm-9 col-lg-10">
-      <h1>{{ user.username }}</h1>
+    <div class="col-sm-8 col-lg-9" style="text-align: center;">
+        {% block user_view %}
+
+        {% if request.user.is_superuser %}
+            <a class="btn btn-lg btn-primary custom-btn" href="{% url 'booking:hotel_add' %}" role="button">Add Hotel</a>
+            <a class="btn btn-lg btn-primary custom-btn" href="{% url 'booking:room_add' %}" role="button">Add Room</a>
+            <a class="btn btn-lg btn-primary custom-btn" href="{% url 'booking:room_type_add' %}" role="button">Add Room Type</a>
+        {% endif %}
+        {% endblock %}
     </div>
   </div>
-</div>
-
-
-<div class="input-group date" data-provide="datepicker">
-    <input type="text" class="form-control">
-    <div class="input-group-addon">
-        <span class="glyphicon glyphicon-th"></span>
-    </div>
+{% else %}
+    <h1>You're not logged in.</h1>
+      <a href="{% url 'auth_login' %}">Login</a>
+{% endif %}
 </div>
 
 
