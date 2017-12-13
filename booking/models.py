@@ -82,20 +82,21 @@ class Room_Type(models.Model):
     )
     room_type = models.CharField(choices=ROOM_TYPES, max_length=10)
     room_standard = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    smoking_in = models.BooleanField()
 
     def __str__(self):
-        return "{} {} {}".format(self.room_type, self.room_standard, self.description)
+        return "{} {}".format(self.room_type, self.room_standard)
 
 
 class Room(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     room_type = models.ForeignKey(Room_Type, on_delete=models.CASCADE)
-    smoking_in = models.BooleanField()
+    price = models.IntegerField(validators=[MinValueValidator(1)])
     avatar = models.ImageField(upload_to='media/images', blank=True)
+    description = models.CharField(max_length=400)
 
     def __str__(self):
-        return "{} {}".format(self.room_type.__str__(), self.smoking_in)
+        return "{}".format(self.room_type.__str__())
 
 
 class Booking(models.Model):

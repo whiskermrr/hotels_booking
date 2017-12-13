@@ -7,7 +7,7 @@ img {
     height: auto;
 }
 
-.image_mrr
+.hotel_image
 {
     width: 600px;
     min-height: 120px;
@@ -16,16 +16,38 @@ img {
     padding: 10px;
 }
 
-.hotel_details
+.details
 {
     float:left;
     padding: 10px;
+    padding-left: 40px;
 }
+
 
 .rooms
 {
     clear: both;
     padding: 10px;
+}
+
+.room_image
+{
+    width: 300px;
+    min-height: 70px;
+    max-height: auto;
+    float: left;
+    padding: 10px;
+}
+
+.room_details
+{
+    float:left;
+    padding: 10px;
+}
+
+.empty-div
+{
+    clear: both;
 }
 
 .badge
@@ -37,32 +59,75 @@ img {
 
 {% block content %}
 
-<div class="image_mrr">
-   <a> <img src="{{ image.image.url }}"> </a>
+<div class="hotel_image">
+    <a> <img src="{{ hotel.avatar.url }}"> </a>
 </div>
 
-<div class="hotel_details">
+<div class="details">
+
     <h1>{{ hotel.name }} <span class="badge badge-primary badge"> RATING: {{ hotel.star_rating }}</span></h1>
-    <ul>
-        <li>{{ hotel.address }}</li>
-        <li>{{ hotel.city }}</li>
-        <li>{{ hotel.country_code }}</li>
-        <li>{{ hotel.email }}</li>
-        <li><a href="{{ hotel.url }}">Hotel's site</a> </li>
-        <li>{{ hotel.phone_number }}</li>
-    </ul>
+
+    <div class="row">
+        <div class="col-md-10">
+            <h3> Street: {{ hotel.address }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <h3> City: {{ hotel.city }} {{ hotel.country_code }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3> Email: {{ hotel.email }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <h3><a href="{{ hotel.url }}">Hotel's site</a> </h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <h3> Phone: {{ hotel.phone_number }}</h3>
+        </div>
+    </div>
+
 </div>
+
 
 <div class="rooms">
+    <hr/>
     {% if rooms %}
     <h1>Hotel's Rooms</h1>
         {% for room in rooms %}
-            <ul>
-                <li><h3>{{ room.room_type.room_type }}</h3></li>
-                <li>{{ room.room_type.room_standard }}</li>
-                <li>{{ room.room_type.description }}</li>
-                <li>Smoking: {% if room.smoking_in %} Yes {% else %} No {% endif %}</li>
-            </ul>
+            <div class="room_image">
+                <img src="{{ room.avatar.url }}">
+            </div>
+
+            <div class="room_details">
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4>Room Type: {{ room.room_type.room_type }}</h4>
+                        <h4>{{ room.room_type.room_standard }}</h4>
+                        <h4>Smoking: {% if room.room_type.smoking_in %} Yes {% else %} No {% endif %}</h4>
+                    </div>
+
+                    <div class="col-md-3" style="text-align: center;">
+                        <h2>${{ room.price }}</h2>
+                        <a class="btn btn-lg btn-primary" href="{% url 'booking:room_detail' room.id %}" role="button">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-div">
+
+            </div>
         {% endfor %}
     {% else %}
         <h3>No rooms!</h3>

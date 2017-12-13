@@ -1,5 +1,5 @@
 from django import forms
-from .models import Hotel, Image, Room
+from .models import Hotel, Image, Room, Room_Type
 
 """
 class UserForm(forms.ModelForm):
@@ -24,4 +24,10 @@ class ImageForm(forms.ModelForm):
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ('hotel', 'room_type', 'smoking_in')
+        fields = ('hotel', 'room_type', 'description', 'price')
+
+
+class RoomTypeForm(forms.ModelForm):
+    class Meta:
+        model = Room_Type
+        fields = ('room_type', 'room_standard', 'smoking_in')

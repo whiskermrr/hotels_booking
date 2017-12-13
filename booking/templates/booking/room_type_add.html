@@ -11,17 +11,12 @@
 <div class="row">
   <div class="col-md-4 col-sm-offset-4">
 
-      <h1>Add Room</h1>
+      <h1>Add Room Type</h1>
 
     <form id="post_form" method="post" action=""
           enctype="multipart/form-data">
-        {{ roomForm|crispy }}
+        {{ roomTypeForm|crispy }}
         {% csrf_token %}
-
-        {{ formset.management_form }}
-        {% for form in formset %}
-            {{ form }}
-        {% endfor %}
 
         <br>
         <div style="text-align:center;">

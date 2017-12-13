@@ -33,6 +33,26 @@ def hotel_detail(request, hotel_id):
     return render(request, 'booking/hotel_detail.html', context)
 
 
+#need to be doneS
+def room_detail(request, room_id):
+    return render(request, 'booking/index.html', {})
+
+
+
+def room_type_add(request):
+    if request.method == 'POST':
+        room_type_form = RoomTypeForm(request.POST)
+        if room_type_form.is_valid():
+            room_type_form.save(commit=False)
+            room_type_form.save()
+
+            return render(request, 'booking/index.html', {})
+
+    else:
+        room_type_form = RoomTypeForm()
+        return render(request, 'booking/room_type_add.html', {'roomTypeForm' : room_type_form})
+
+
 def hotel_add(request):
     ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=3)
 
