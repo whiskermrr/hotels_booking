@@ -32,7 +32,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if request.user.is_authenticated %}
                     <li>
-                        <h4 style="color: #7c90db; padding: 5px;">{{ user.username }}</h4>
+                        <a href="{% url 'booking:user_profile' user.username %}">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i> {{ user.username }}
+                        </a>
                     </li>
                     <li>
                         <a href="{% url 'auth_logout' %}">

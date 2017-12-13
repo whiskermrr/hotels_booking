@@ -48,6 +48,7 @@ class Hotel(models.Model):
                                  message="Phone number must be entered in the format: '+999999999'")
     phone_number = models.CharField(max_length=20, validators=[phone_regex])
     address = models.CharField(max_length=100)
+    avatar = models.ImageField(upload_to='media/avatars', blank=True)
     """city = ChainedForeignKey(
         Country_Code,
         chained_field="country_code",
@@ -91,6 +92,7 @@ class Room(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     room_type = models.ForeignKey(Room_Type, on_delete=models.CASCADE)
     smoking_in = models.BooleanField()
+    avatar = models.ImageField(upload_to='media/images', blank=True)
 
     def __str__(self):
         return "{} {}".format(self.room_type.__str__(), self.smoking_in)
@@ -115,7 +117,7 @@ class Booking(models.Model):
         return "%s %s %s %s %s %s" % (
             self.description,
             self.guest.__str__(),
-            self.hotel_id.__str__(),
+            self.hotel.__str__(),
             self.room.__str__(),
             self.start_date,
             self.end_date,

@@ -1,6 +1,6 @@
 from django.forms import modelformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import *
+from django.contrib.auth.models import User
 from .forms import *
 
 def hotels(request):
@@ -13,9 +13,10 @@ def hotels(request):
     context = {'hotels': hotels}
     return render(request, 'booking/hotels.html', context)
 
+
+
 def index(request):
     return render(request, 'booking/index.html', {})
-
 
 
 
@@ -48,6 +49,10 @@ def hotel_add(request):
                 photo = Image(hotel=hotel_form, image=image)
                 photo.save()
 
+            image = formset.cleaned_data[0]['image']
+            hotel_form.avatar = image
+            hotel_form.save()
+
             hotels = Hotel.objects.all()
             return render(request, 'booking/hotels.html', {'hotels' : hotels})
 
@@ -61,6 +66,38 @@ def hotel_add(request):
         return render(request, 'booking/hotel_add.html', context)
 
 
+
+def room_add(request):
+    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=3)
+
+    if request.method == 'POST':
+        roomForm = RoomForm(request.POST)
+        formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
+
+        if roomForm.is_valid() and formset.is_valid():
+            room_form = roomForm.save(commit=False)
+            room_form.save()
+
+            for form in formset.cleaned_data:
+                image = form['image']
+                photo = Image(room=room_form, image=image)
+                photo.save()
+
+            image = formset.cleaned_data[0]['image']
+            room_form.avatar = image
+            room_form.save()
+
+            return render(request, 'booking/index.html', {})
+
+        else:
+            print (roomForm.errors, formset.errors)
+
+    else:
+        roomForm = RoomForm()
+        formset = ImageFormSet(queryset=Image.objects.none())
+        context = {'roomForm' : roomForm, 'formset' : formset}
+        return render(request, 'booking/room_add.html', context)
+"""
 def register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
@@ -70,3 +107,9 @@ def register(request):
     else:
         user_form = UserForm()
         return render(request, 'booking/register.html', {'user_form' : user_form})
+"""
+
+def user_profile(request, username):
+    user = User.objects.get(username=username)
+    return render(request, 'booking/user_profile.html', {'user' : user})
+

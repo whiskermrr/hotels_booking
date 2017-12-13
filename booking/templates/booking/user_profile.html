@@ -1,0 +1,33 @@
+{% extends 'booking/base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 col-lg-2">
+      <nav class="navbar navbar-default navbar-fixed-side">
+
+          <p><a href="{% url 'auth_password_change' %}">Change Password</a></p>
+          <p><a href="{% url 'auth_password_change' %}">Bookings</a></p>
+          <p><a href="{% url 'auth_password_change' %}">Payments</a></p>
+          <p><a href="{% url 'auth_password_change' %}">Comments</a></p>
+
+      </nav>
+    </div>
+    <div class="col-sm-9 col-lg-10">
+      <h1>{{ user.username }}</h1>
+    </div>
+  </div>
+</div>
+
+
+<div class="input-group date" data-provide="datepicker">
+    <input type="text" class="form-control">
+    <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </div>
+</div>
+
+
+
+{% endblock %}

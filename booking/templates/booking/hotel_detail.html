@@ -2,8 +2,16 @@
 
 {% block style %}
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 .image_mrr
 {
+    width: 600px;
+    min-height: 120px;
+    max-height: auto;
     float: left;
     padding: 10px;
 }
@@ -20,6 +28,11 @@
     padding: 10px;
 }
 
+.badge
+{
+    background-color: #007bff;
+}
+
 {% endblock %}
 
 {% block content %}
@@ -29,9 +42,8 @@
 </div>
 
 <div class="hotel_details">
+    <h1>{{ hotel.name }} <span class="badge badge-primary badge"> RATING: {{ hotel.star_rating }}</span></h1>
     <ul>
-        <li><h1>{{ hotel.name }}</h1></li>
-        <li>{{ hotel.star_rating }}</li>
         <li>{{ hotel.address }}</li>
         <li>{{ hotel.city }}</li>
         <li>{{ hotel.country_code }}</li>
@@ -43,6 +55,7 @@
 
 <div class="rooms">
     {% if rooms %}
+    <h1>Hotel's Rooms</h1>
         {% for room in rooms %}
             <ul>
                 <li><h3>{{ room.room_type.room_type }}</h3></li>
