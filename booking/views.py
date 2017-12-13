@@ -124,19 +124,33 @@ def room_add(request):
         formset = ImageFormSet(queryset=Image.objects.none())
         context = {'roomForm' : roomForm, 'formset' : formset}
         return render(request, 'booking/room_add.html', context)
-"""
-def register(request):
-    if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
-        if user_form.is_valid():
-            user_form.save()
-            return redirect('booking:index')
-    else:
-        user_form = UserForm()
-        return render(request, 'booking/register.html', {'user_form' : user_form})
-"""
+
+
 
 def user_profile(request, username):
     user = User.objects.get(username=username)
     return render(request, 'booking/user_profile.html', {'user' : user})
+
+
+def room_bookit(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
+    hotel = get_object_or_404(Hotel, id=room.hotel.id)
+
+    if request.method == 'POST':
+        bookingForm = BookingForm(request.POST)
+        if bookingForm.is_valid():
+            booking_form = bookingForm.save(commit=False)
+
+            booking_form.guest = request.user
+            booking_form.room = room
+            booking_form.hotel = hotel
+            booking_form.save()
+
+            return render(request, 'booking/user_profile.html', {'user': request.user})
+
+    else:
+        bookingForm = BookingForm(initial={'hotel' : hotel.id})
+        return render(request, 'booking/room_bookit.html', {'bookingForm': bookingForm})
+
+
 

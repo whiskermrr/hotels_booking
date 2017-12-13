@@ -2,8 +2,9 @@ from django.db import models
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator, URLValidator
 from django_countries.fields import CountryField
 from smart_selects.db_fields import ChainedForeignKey
+from django.contrib.auth.models import User
 
-
+"""
 class User(models.Model):
     name = models.CharField(max_length=30, blank=False, null=False)
     surname = models.CharField(max_length=50, blank=False, null=False)
@@ -29,7 +30,7 @@ class Agent(models.Model):
 
     def __str__(self):
         return self.user.__str__()
-
+"""
 
 class Hotel_Chain(models.Model):
     chain_name = models.CharField(max_length=50, unique=True)
@@ -100,16 +101,9 @@ class Room(models.Model):
 
 
 class Booking(models.Model):
-    guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    room = ChainedForeignKey(
-        Room,
-        chained_field="hotel",
-        chained_model_field="hotel",
-        show_all=False,
-        sort=True,
-        auto_choose=True
-    )
+    guest = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, blank=True)
+    room =  models.ForeignKey(Room, on_delete=models.CASCADE, blank=True)
     start_date = models.DateField(auto_now=False, auto_created=False)
     end_date = models.DateField(auto_now=False, auto_created=False)
     description = models.CharField(max_length=100)
