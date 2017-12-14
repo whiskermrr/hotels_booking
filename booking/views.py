@@ -33,19 +33,17 @@ def hotel_detail(request, hotel_id):
     return render(request, 'booking/hotel_detail.html', context)
 
 
-#need to be doneS
+
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     images = Image.objects.filter(room=room_id)
     image = images[0]
-    comments = Comment.objects.filter(room=room_id)
-
+    comments = Comment.objects.filter(room=room_id).order_by('-date')
     context = {
         'room': room,
         'image': image,
         'comments': comments,
     }
-
     if request.method == 'POST':
         commentForm = CommentForm()
         comment_form = commentForm.save(commit=False)
@@ -60,7 +58,7 @@ def room_detail(request, room_id):
         rating_form.save()
         comment_form.rating = rating_form
         comment_form.save()
-
+        return redirect('booking:room_detail', room.id)
 
     return render(request, 'booking/room_detail.html', context)
 

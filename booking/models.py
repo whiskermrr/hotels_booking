@@ -140,9 +140,16 @@ class Rating(models.Model):
     rate = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, blank=True)
 
+    def __str__(self):
+        return "{} {}".format(self.rate.__str__(), self.hotel.__str__())
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, blank=True)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, blank=True)
     context = models.CharField(max_length=500)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return "{} {} {}".format(self.user.__str__(), self.context.__str__(), self.date)

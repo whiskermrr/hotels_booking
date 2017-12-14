@@ -75,19 +75,31 @@ img {
                 <h2>Comments:</h2>
             </div>
         </div>
+    <div class="container">
         {% for comment in comments %}
-            <div class="row">
-                <div class="col-md-10 col-sm-offset-1">
-                    <h3>User: {{ comment.user.username }}</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-10 col-sm-offset-1">
-                    <p>{{ comment.context }}</p>
-                </div>
-            </div>
-        {%endfor %}
 
+        <div class="well">
+            <div class="media">
+                <div class="media-body">
+                    <h4 class="media-heading"><b>by:</b> <b style="color: #5db7de;">{{ comment.user.username }}</b></h4>
+                    <p class="text-right"></p>
+                    <p>{{ comment.context }}</p>
+                    <ul class="list-inline list-unstyled">
+                        <li><span><i class="glyphicon glyphicon-calendar"></i> {{ comment.date }}</span></li>
+                        <li>|</li>
+                        <li>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {%endfor %}
+    </div>
     {% else %}
         <div class="row">
             <div class="col-md-10 col-sm-offset-1">
@@ -115,6 +127,7 @@ img {
             </form>
         </div>
 	</div>
+    <br/>
     {% endif %}
 </div>
 
