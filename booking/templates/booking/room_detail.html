@@ -99,6 +99,23 @@ img {
             </div>
         </div>
         {%endfor %}
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if comments.has_previous %}
+                <a href="?{{ page_var }}={{ comments.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+                </span>
+
+                {% if comments.has_next %}
+                    <a href="?{{ page_var }}={{ comments.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+
     </div>
     {% else %}
         <div class="row">

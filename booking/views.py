@@ -1,6 +1,7 @@
 from django.forms import modelformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import *
 
 def hotels(request):
@@ -38,12 +39,31 @@ def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     images = Image.objects.filter(room=room_id)
     image = images[0]
-    comments = Comment.objects.filter(room=room_id).order_by('-date')
+    comments_list = Comment.objects.filter(room=room_id).order_by('-date')
+    paginator = Paginator(comments_list, 5)
+    page_var = 'page'
+    page = request.GET.get(page_var)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     context = {
         'room': room,
         'image': image,
         'comments': comments,
+        'page_var': page_var,
     }
+    if request.method == 'POST':
+        return comment_add(request, room_id)
+
+    return render(request, 'booking/room_detail.html', context)
+
+
+def comment_add(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
     if request.method == 'POST':
         commentForm = CommentForm()
         comment_form = commentForm.save(commit=False)
@@ -58,9 +78,8 @@ def room_detail(request, room_id):
         rating_form.save()
         comment_form.rating = rating_form
         comment_form.save()
-        return redirect('booking:room_detail', room.id)
 
-    return render(request, 'booking/room_detail.html', context)
+    return redirect('booking:room_detail', room.id)
 
 
 

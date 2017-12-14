@@ -149,7 +149,7 @@ class Comment(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, blank=True)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, blank=True)
     context = models.CharField(max_length=500)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{} {} {}".format(self.user.__str__(), self.context.__str__(), self.date)
