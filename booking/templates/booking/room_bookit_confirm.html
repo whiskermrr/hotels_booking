@@ -1,0 +1,56 @@
+{% extends 'booking/base.html' %}
+
+{% block style %}
+{{ block.super }}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.hotel_image
+{
+    width: 300px;
+    min-height: 120px;
+    max-height: auto;
+    float: left;
+    padding: 10px;
+}
+
+.bold
+{
+    color: #00a7ff;
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container" style="background-color: #faffa3;">
+    <div class="row" style="padding: 15px;">
+            <div class="hotel_image">
+                <a> <img src="{{ booking.room.avatar.url }}"> </a>
+            </div>
+        <div class="col-md-4">
+            <p><b class="bold">Booked from: </b>{{ booking.start_date }}</p>
+            <p><b class="bold"> to: </b> {{ booking.end_date }}</p>
+            <p><b class="bold">Hotel: </b> {{ booking.hotel.name }}</p>
+            <h2><b style="color: #ff640c;">Price:  ${{ price }}</b></h2>
+        </div>
+        <div class="col-md-8">
+            <form method="post" action="">
+                {% csrf_token %}
+                <input class="btn btn-lg btn-primary" type="submit" name="submit" value="Confirm Booking" />
+            </form>
+        </div>
+        <div class="col-md-2 col-sm-offset-11">
+            <a class="btn btn-lg btn-primary" href="{% url 'booking:booking_cancel' booking.id %}" role="button">Cancel</a>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+
+{% endblock %}

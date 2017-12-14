@@ -66,35 +66,36 @@ img {
 
 <div class="details">
 
-    <h1>{{ hotel.name }} <span class="badge badge-primary badge"> RATING: {{ hotel.star_rating }}</span></h1>
+    <h1>{{ hotel.name }} {{hotel.hotel_chain.chain_name }} <span class="badge badge-primary badge"> RATING: {{ hotel.star_rating }}</span></h1>
 
     <div class="row">
         <div class="col-md-10">
-            <h3> Street: {{ hotel.address }}</h3>
+            <h3> <b>Street:</b> {{ hotel.address }}</h3>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-10">
-            <h3> City: {{ hotel.city }} {{ hotel.country_code }}</h3>
+            <h3> <b>City:</b> {{ hotel.city }} {{ hotel.country_code }}</h3>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            <h3> Email: {{ hotel.email }}</h3>
+            <h3><i class="fa fa-envelope" aria-hidden="true" style="color: #cc181e;"></i> <b>Email:</b> {{ hotel.email }}</h3>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-10">
-            <h3><a href="{{ hotel.url }}">Hotel's site</a> </h3>
+            <h3><i class="fa fa-globe" aria-hidden="true" style="color: #2793e8;"></i> <a href="{{ hotel.url }}">Hotel's site</a> </h3>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-10">
-            <h3> Phone: {{ hotel.phone_number }}</h3>
+
+            <h3><i class="fa fa-phone" aria-hidden="true" style="color: #559900;"></i> <b>Phone:</b> {{ hotel.phone_number }}</h3>
         </div>
     </div>
 
@@ -114,9 +115,9 @@ img {
                         <img src="{{ room.avatar.url }}">
                     </div>
                     <div class="col-lg-5">
-                        <h4>Type: {{ room.room_type.room_type }}</h4>
+                        <h4><i class="fa fa-bed" aria-hidden="true"></i> <b>Type:</b> {{ room.room_type.room_type }}</h4>
                         <h4>{{ room.room_type.room_standard }}</h4>
-                        <h4>Smoking: {% if room.room_type.smoking_in %} Yes {% else %} No {% endif %}</h4>
+                        <h4><b>Smoking:</b> {% if room.room_type.smoking_in %} Yes {% else %} No {% endif %}</h4>
                     </div>
 
                     <div class="col-lg-3" style="text-align: center;">

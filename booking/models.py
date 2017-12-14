@@ -120,9 +120,14 @@ class Booking(models.Model):
 
 
 class Payment(models.Model):
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
-    amount = models.FloatField(validators=[MinValueValidator(0)])
+    guest = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    amount = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
+    status = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return "{} {} {}".format(self.amount.__str__(), self.status.__str__(), self.date)
 
 
 class Image(models.Model):

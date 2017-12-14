@@ -2,6 +2,26 @@
 {% load crispy_forms_tags %}
 
 {% block style %}
+{{ block.super }}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.hotel_image
+{
+    width: 300px;
+    min-height: 120px;
+    max-height: auto;
+    float: left;
+    padding: 10px;
+}
+
+.badge
+{
+    background-color: #007bff;
+}
 
 {% endblock %}
 
@@ -9,7 +29,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4 col-sm-offset-4">
+        <div class="col-md-4 col-sm-offset-1">
             <h2>{{ title }}</h2>
             <form id="post_form" method="post" action="" enctype="multipart/form-data">
                 {{ bookingForm|crispy }}
@@ -21,6 +41,36 @@
                 <br>
             </form>
         </div>
+        <div class="col-md-7">
+            <div class="hotel_image">
+                <a> <img src="{{ room.avatar.url }}"> </a>
+            </div>
+            <h2>Hotel: {{ hotel.name }}</h2>
+            <span class="badge badge-primary badge"> RATING: {{ hotel.star_rating }}</span>
+            <p></p>
+            <p><i class="fa fa-location-arrow" aria-hidden="true" style="color: #2793e8;"></i>
+            <b>Location:</b> {{ hotel.address }}, {{ hotel.city }} {{ hotel.country_code }}</p>
+            <p><i class="fa fa-phone" aria-hidden="true" style="color: #559900;"></i>
+            <b>Phone:</b> {{ hotel.phone_number }}</p>
+            <p><i class="fa fa-envelope" aria-hidden="true" style="color: #cc181e;"></i>
+            <b>Email:</b> {{ hotel.phone_number }}</p>
+            <br/>
+            <h2>Room:</h2>
+            <p><i class="fa fa-bed" aria-hidden="true"></i> <b>Type:</b> {{ room.room_type.room_type }}</p>
+            <p><b>Standard:</b> {{ room.room_type.room_standard }}</p>
+            <p><b>Smoking:</b> {% if room.room_type.smoking_in %} Yes {% else %} No {% endif %}</p>
+            <p><b>Price:</b> ${{ room.price }}</p>
+        </div>
     </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-10 col-sm-offset-1">
+            <h2>Comments:</h2>
+        </div>
+    </div>
+</div>
+
+<div class="empty-div">
+
 </div>
 {% endblock %}

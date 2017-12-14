@@ -41,7 +41,7 @@ img {
             </div>
 
             <div class="hotel_detail">
-                <a href="{% url 'booking:hotel_detail' hotel.id %}"><h2>{{ hotel.name }} <span class="badge badge-success">{{ hotel.star_rating }}</span></h2></a>
+                <a href="{% url 'booking:hotel_detail' hotel.id %}"><h2>{{ hotel.name }} {{hotel.hotel_chain.chain_name }} <span class="badge badge-success">{{ hotel.star_rating }}</span></h2></a>
                 <ul>
                     <li>{{ hotel.address }}</li>
                     <li>{{ hotel.city }}</li>

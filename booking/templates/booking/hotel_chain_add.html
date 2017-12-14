@@ -15,14 +15,8 @@
 
     <form id="room_form" method="post" action=""
           enctype="multipart/form-data">
-        {{ roomForm|crispy }}
+        {{ hotelChainForm|crispy }}
         {% csrf_token %}
-
-        {{ formset.management_form }}
-        {% for form in formset %}
-            {{ form }}
-        {% endfor %}
-
         <br>
         <div style="text-align:center;">
         <input class="btn btn-lg btn-primary" type="submit" name="submit" value="Submit" />

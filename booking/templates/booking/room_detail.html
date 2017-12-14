@@ -50,7 +50,7 @@ img {
 <div class="container">
     <div class="row">
         <div class="col-md-12" style="text-align: center;">
-            <h3>Type: {{ room.room_type.room_type }}</h3>
+            <h3><i class="fa fa-bed" aria-hidden="true"></i> Type: {{ room.room_type.room_type }}</h3>
         </div>
     </div>
 
@@ -63,6 +63,13 @@ img {
     <div class="row">
         <div class="col-md-12" style="text-align: center;">
             <a class="btn btn-lg btn-primary" href="{% url 'booking:room_bookit' room.id %}" role="button">Book It!</a>
+        </div>
+    </div>
+
+    <hr/>
+    <div class="row">
+        <div class="col-md-10 col-sm-offset-1">
+            <h2>Comments:</h2>
         </div>
     </div>
 </div>

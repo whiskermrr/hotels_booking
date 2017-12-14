@@ -1,0 +1,56 @@
+{% extends "booking/user_profile.html" %}
+
+{% block style %}
+{{ block.super }}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.hotel_image
+{
+    width: 300px;
+    min-height: 120px;
+    max-height: auto;
+    float: left;
+    padding: 10px;
+}
+
+.bold
+{
+    color: #00a7ff;
+}
+
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block user_view %}
+
+    {% if bookings %}
+        <h1>Your Bookings:</h1>
+        <br/>
+        <hr/>
+        {% for booking in bookings %}
+            <div class="row" style="padding: 1px;">
+                <div class="col-md-4">
+                    <a> <img src="{{ booking.room.avatar.url }}"> </a>
+                </div>
+                <div class="col-md-6">
+                    <p><b class="bold">from: </b>{{ booking.start_date }}</p>
+                    <p><b class="bold"> to: </b> {{ booking.end_date }}</p>
+                    <p><b class="bold">Hotel: </b> {{ booking.hotel.name }}</p>
+                    <p><b>Description: </b> {{ booking.description }}</p>
+                </div>
+            </div>
+            <hr/>
+        {% endfor %}
+    {% else %}
+        <h1>There is no Bookings</h1>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "booking/user_profile.html" %}
+
+{% block style %}
+{{ block.super }}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.hotel_image
+{
+    width: 300px;
+    min-height: 120px;
+    max-height: auto;
+    float: left;
+    padding: 10px;
+}
+
+.bold
+{
+    color: #00a7ff;
+}
+
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block user_view %}
+
+    {% if payments %}
+        <h1>Your Payments:</h1>
+        <br/>
+        <hr/>
+        {% for payment in payments %}
+            <div class="row" style="padding: 1px;">
+                <div class="col-md-4">
+                    <a> <img src="{{ payment.booking.room.avatar.url }}"> </a>
+                </div>
+                <div class="col-md-4">
+                    <p><b class="bold">from: </b>{{ payment.booking.start_date }}</p>
+                    <p><b class="bold"> to: </b> {{ payment.booking.end_date }}</p>
+                    <p><b class="bold">Hotel: </b> {{ booking.hotel.name }}</p>
+                    <p><b style="color: #ff640c;">Price: </b> ${{ payment.amount }}</p>
+                </div>
+                <div class="col-md-3">
+                    {% if payment.status %}
+                        <p><b>Status: </b><b style="color: green;"> PAYED</b></p>
+                    {% else %}
+                        <p><b>Status: </b><b style="color: red;"> NOT PAYED</b></p>
+                        <a class="btn btn-lg btn-primary" href="{% url 'booking:pay_bill' payment.id %}" role="button">Pay</a>
+                    {% endif %}
+                </div>
+            </div>
+            <hr/>
+        {% endfor %}
+    {% else %}
+        <h1>There is no Payments</h1>
+    {% endif %}
+
+{% endblock %}

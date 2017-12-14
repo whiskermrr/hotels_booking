@@ -1,5 +1,5 @@
 from django import forms
-from .models import Hotel, Image, Room, Room_Type, Booking
+from .models import Hotel, Image, Room, Room_Type, Booking, Payment, Hotel_Chain
 
 """
 class UserForm(forms.ModelForm):
@@ -37,3 +37,15 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ('start_date', 'end_date', 'description')
+
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ('guest', 'booking',)
+
+
+class HotelChainForm(forms.ModelForm):
+    class Meta:
+        model = Hotel_Chain
+        fields = ('chain_name',)

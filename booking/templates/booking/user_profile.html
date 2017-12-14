@@ -15,8 +15,8 @@
       <nav class="navbar navbar-default navbar-fixed-side" style="text-align: center;">
 
           <p><a href="{% url 'auth_password_change' %}">Change Password</a></p>
-          <p><a href="{% url 'auth_password_change' %}">Bookings</a></p>
-          <p><a href="{% url 'auth_password_change' %}">Payments</a></p>
+          <p><a href="{% url 'booking:user_bookings' request.user.username %}">Bookings</a></p>
+          <p><a href="{% url 'booking:user_payments' request.user.username %}">Payments</a></p>
           <p><a href="{% url 'auth_password_change' %}">Messages</a></p>
 
       </nav>
@@ -25,6 +25,7 @@
         {% block user_view %}
 
         {% if request.user.is_superuser %}
+        <a class="btn btn-lg btn-primary" href="{% url 'booking:hotel_chain_add' %}" role="button">Add Hotel Chain</a>
             <a class="btn btn-lg btn-primary" href="{% url 'booking:hotel_add' %}" role="button">Add Hotel</a>
             <a class="btn btn-lg btn-primary" href="{% url 'booking:room_add' %}" role="button">Add Room</a>
             <a class="btn btn-lg btn-primary" href="{% url 'booking:room_type_add' %}" role="button">Add Room Type</a>

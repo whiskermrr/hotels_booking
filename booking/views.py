@@ -142,36 +142,106 @@ def room_bookit(request, room_id):
             if bookingForm.is_valid():
                 booking_form = bookingForm.save(commit=False)
                 #date validations goes here
+                if booking_form.start_date >= booking_form.end_date:
+                    return clear_booking_form(request, 'Wrong dates!', hotel, room)
+
+                bookings = Booking.objects.filter(room=room)
+
+                for booking in bookings:
+                    if booking.start_date <= booking_form.start_date < booking.end_date or booking.start_date < booking_form.end_date <= booking.end_date:
+                        return clear_booking_form(request, 'Room is already booked for this dates!', hotel, room)
+
+                #days = booking_form.end_date.day - booking_form.start_date.day
+                #price = days * room.price
                 booking_form.guest = request.user
                 booking_form.room = room
                 booking_form.hotel = hotel
                 booking_form.save()
-
-                return render(request, 'booking/user_profile.html', {'user': request.user})
+                #return render(request, 'booking/room_bookit_confirm.html', {'booking': booking_form, 'price': price })
+                return redirect('booking:booking_confirm', booking_id=booking_form.id)
 
             else:
-                title = 'Invalid Form!'
-                bookingForm = BookingForm(initial={'hotel': hotel.id})
-                context = {
-                    'bookingForm': bookingForm,
-                    'title': title,
-                    'hotel': hotel,
-                    'room': room,
-                }
-                return render(request, 'booking/room_bookit.html', context)
+                return clear_booking_form(request, 'Invalid form!', hotel, room)
 
         else:
-            title = 'Almost Done!'
-            bookingForm = BookingForm(initial={'hotel' : hotel.id})
-            context = {
-                'bookingForm': bookingForm,
-                'title': title,
-                'hotel': hotel,
-                'room': room,
-            }
-            return render(request, 'booking/room_bookit.html', {'bookingForm': bookingForm, 'title' : title})
+            return clear_booking_form(request, 'Almost done!', hotel, room)
 
-    return redirect('auth_login')
+    else:
+        return redirect('auth_login')
 
 
+def clear_booking_form(request, title, hotel, room):
+    title = title
+    bookingForm = BookingForm(initial={'hotel': hotel.id})
+    context = {
+        'bookingForm': bookingForm,
+        'title': title,
+        'hotel': hotel,
+        'room': room,
+    }
+    return render(request, 'booking/room_bookit.html', context)
 
+
+
+def booking_confirm(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    if request.user.is_authenticated() and request.user.id == booking.guest.id:
+        if booking:
+            days = booking.end_date.day - booking.start_date.day
+            price = days * booking.room.price
+            if request.method == 'POST':
+                paymentForm = PaymentForm()
+                payment_form = paymentForm.save(commit=False)
+                payment_form.guest = booking.guest
+                payment_form.booking = booking
+                payment_form.amount = price
+                payment_form.status = False
+                payment_form.save()
+                return redirect('booking:user_bookings', username=request.user)
+            else:
+                return render(request, 'booking/room_bookit_confirm.html', {'booking': booking, 'price': price})
+
+    else:
+        return redirect('auth_login')
+
+
+def booking_cancel(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    booking.delete()
+    return redirect('booking:index')
+
+
+
+def user_bookings(request, username):
+    bookings = Booking.objects.filter(guest_id=request.user.id)
+    return render(request, 'booking/user_bookings.html', {'bookings': bookings})
+
+
+def user_payments(request, username):
+    payments = Payment.objects.filter(guest_id=request.user.id)
+    return render(request, 'booking/user_payments.html', {'payments': payments})
+
+
+def pay_bill(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+
+    if payment:
+        payment.status = True
+        print('STATUS CHANGED!')
+        payment.save()
+
+    return redirect('booking:user_payments', username=request.user)
+
+
+def hotel_chain_add(request):
+    if request.method == 'POST':
+        hotelChainForm = HotelChainForm(request.POST)
+        if hotelChainForm.is_valid():
+            hotel_chain_form = hotelChainForm.save(commit=False)
+            hotel_chain_form.save()
+            return redirect('booking:index')
+
+    else:
+        hotelChainForm = HotelChainForm()
+        return render(request, 'booking/hotel_chain_add.html', {'hotelChainForm': hotelChainForm})
