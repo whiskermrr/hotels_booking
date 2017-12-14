@@ -42,7 +42,7 @@ class Hotel_Chain(models.Model):
 class Hotel(models.Model):
     hotel_chain = models.ForeignKey(Hotel_Chain, blank=True, null=True)
     country_code = CountryField(max_length=100)
-    star_rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    star_rating = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=100)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
@@ -134,3 +134,15 @@ class Image(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, null=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='media/images')
+
+
+class Rating(models.Model):
+    rate = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, blank=True)
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, blank=True)
+    rating = models.ForeignKey(Rating, on_delete=models.CASCADE, blank=True)
+    context = models.CharField(max_length=500)

@@ -38,10 +38,30 @@ def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     images = Image.objects.filter(room=room_id)
     image = images[0]
+    comments = Comment.objects.filter(room=room_id)
+
     context = {
-        'room' : room,
+        'room': room,
         'image': image,
+        'comments': comments,
     }
+
+    if request.method == 'POST':
+        commentForm = CommentForm()
+        comment_form = commentForm.save(commit=False)
+        comment_form.user = request.user
+        comment_form.room = room
+        comment_form.context = request.POST.get('content')
+
+        ratingForm = RatingForm()
+        rating_form = ratingForm.save(commit=False)
+        rating_form.rate = request.POST.get('rating')
+        rating_form.hotel = room.hotel
+        rating_form.save()
+        comment_form.rating = rating_form
+        comment_form.save()
+
+
     return render(request, 'booking/room_detail.html', context)
 
 

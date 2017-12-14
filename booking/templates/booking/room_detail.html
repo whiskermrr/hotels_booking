@@ -67,11 +67,56 @@ img {
     </div>
 
     <hr/>
-    <div class="row">
-        <div class="col-md-10 col-sm-offset-1">
-            <h2>Comments:</h2>
+
+
+    {% if comments %}
+        <div class="row">
+            <div class="col-md-10 col-sm-offset-1">
+                <h2>Comments:</h2>
+            </div>
         </div>
-    </div>
+        {% for comment in comments %}
+            <div class="row">
+                <div class="col-md-10 col-sm-offset-1">
+                    <h3>User: {{ comment.user.username }}</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-sm-offset-1">
+                    <p>{{ comment.context }}</p>
+                </div>
+            </div>
+        {%endfor %}
+
+    {% else %}
+        <div class="row">
+            <div class="col-md-10 col-sm-offset-1">
+                <h2>There is no comments.</h2>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+	<div class="row">
+		<div class="col-md-12">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="controls controls-row">
+                    <input name="rating" type="number" class="col-md-4 col-sm-offset-2" placeholder="Your rating" min="1" max="10">
+                </div>
+                <br/>
+                <div class="controls">
+                    <textarea name="content" class="col-md-8 col-sm-offset-2" placeholder="Your Message" rows="5"></textarea>
+                </div>
+
+                <div class="controls col-md-2 col-sm-offset-5">
+                    <button id="contact-submit" type="submit" class="btn btn-primary input-medium pull-right">Send</button>
+                </div>
+            </form>
+        </div>
+	</div>
+    {% endif %}
 </div>
+
 
 {% endblock %}
