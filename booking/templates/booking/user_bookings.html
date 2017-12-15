@@ -38,13 +38,16 @@ img {
         {% for booking in bookings %}
             <div class="row" style="padding: 1px;">
                 <div class="col-md-4">
-                    <a> <img src="{{ booking.room.avatar.url }}"> </a>
+                    <a href="{% url 'booking:room_detail' room_id=booking.room.id %}"> <img src="{{ booking.room.avatar.url }}"> </a>
                 </div>
                 <div class="col-md-6">
                     <p><b class="bold">from: </b>{{ booking.start_date }}</p>
                     <p><b class="bold"> to: </b> {{ booking.end_date }}</p>
                     <p><b class="bold">Hotel: </b> {{ booking.hotel.name }}</p>
                     <p><b>Description: </b> {{ booking.description }}</p>
+                </div>
+                <div class="col-md-2">
+                    <b>Booked:<br/> {{ booking.booked_date }}</b>
                 </div>
             </div>
             <hr/>

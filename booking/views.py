@@ -256,12 +256,12 @@ def booking_cancel(request, booking_id):
 
 
 def user_bookings(request, username):
-    bookings = Booking.objects.filter(guest_id=request.user.id)
+    bookings = Booking.objects.filter(guest_id=request.user.id).order_by('-booked_date')
     return render(request, 'booking/user_bookings.html', {'bookings': bookings})
 
 
 def user_payments(request, username):
-    payments = Payment.objects.filter(guest_id=request.user.id)
+    payments = Payment.objects.filter(guest_id=request.user.id).order_by('-booking__booked_date')
     return render(request, 'booking/user_payments.html', {'payments': payments})
 
 

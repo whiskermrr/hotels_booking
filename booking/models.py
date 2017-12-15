@@ -1,36 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator, URLValidator
 from django_countries.fields import CountryField
-from smart_selects.db_fields import ChainedForeignKey
 from django.contrib.auth.models import User
 
-"""
-class User(models.Model):
-    name = models.CharField(max_length=30, blank=False, null=False)
-    surname = models.CharField(max_length=50, blank=False, null=False)
-    address = models.CharField(max_length=100, blank=False, null=False)
-    email = models.EmailField(max_length=100, blank=False, null=False)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
-                                 message="Phone number must be entered in the format: '+999999999'")
-    phone_number = models.CharField(max_length=20, validators=[phone_regex])
 
-    def __str__(self):
-        return "%s %s %s %s %s" % (self.name, self.surname, self.address, self.email, self.phone_number)
-
-
-class Guest(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user.__str__()
-
-
-class Agent(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user.__str__()
-"""
 
 class Hotel_Chain(models.Model):
     chain_name = models.CharField(max_length=50, unique=True)
@@ -42,7 +15,8 @@ class Hotel_Chain(models.Model):
 class Hotel(models.Model):
     hotel_chain = models.ForeignKey(Hotel_Chain, blank=True, null=True)
     country_code = CountryField(max_length=100)
-    star_rating = models.DecimalField(validators=[MinValueValidator(1), MaxValueValidator(10)], max_digits=3, decimal_places=1)
+    star_rating = models.DecimalField(validators=[MinValueValidator(1), MaxValueValidator(10)],
+                                      max_digits=3, decimal_places=1)
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=100)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
@@ -50,13 +24,6 @@ class Hotel(models.Model):
     phone_number = models.CharField(max_length=20, validators=[phone_regex])
     address = models.CharField(max_length=100)
     avatar = models.ImageField(upload_to='media/avatars', blank=True)
-    """city = ChainedForeignKey(
-        Country_Code,
-        chained_field="country_code",
-        chained_model_field="country_code",
-        show_all=False,
-        sort=True,
-        auto_choose=True)"""
     city = models.CharField(max_length=50)
     url = models.URLField(validators=[URLValidator])
 
@@ -106,6 +73,7 @@ class Booking(models.Model):
     room =  models.ForeignKey(Room, on_delete=models.CASCADE, blank=True)
     start_date = models.DateField(auto_now=False, auto_created=False)
     end_date = models.DateField(auto_now=False, auto_created=False)
+    booked_date = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=100)
 
     def __str__(self):
