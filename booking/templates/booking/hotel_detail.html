@@ -66,7 +66,7 @@ img {
 
 <div class="details">
 
-    <h1>{{ hotel.name }} {{hotel.hotel_chain.chain_name }} <span class="badge badge-primary badge"> RATING: {{ hotel.star_rating }}</span></h1>
+    <h1>{{ hotel.name }} {% if hotel.hotel_chain %} ({{ hotel.hotel_chain.chain_name }}) {% endif %} <span class="badge badge-primary badge"> RATING: {{ hotel.star_rating }}</span></h1>
 
     <div class="row">
         <div class="col-md-10">

@@ -1,7 +1,7 @@
 from django.forms import modelformset_factory
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import *
 
@@ -68,6 +68,7 @@ def room_detail(request, room_id):
 
 def comment_add(request, room_id):
     room = get_object_or_404(Room, id=room_id)
+    hotel = get_object_or_404(Hotel, id=room.hotel.id)
     if request.method == 'POST':
         commentForm = CommentForm()
         comment_form = commentForm.save(commit=False)
@@ -78,10 +79,14 @@ def comment_add(request, room_id):
         ratingForm = RatingForm()
         rating_form = ratingForm.save(commit=False)
         rating_form.rate = request.POST.get('rating')
-        rating_form.hotel = room.hotel
+        rating_form.hotel = hotel
+        rate_avg = Rating.objects.filter(hotel_id=rating_form.hotel.id).aggregate(Avg('rate'))
+        hotel.star_rating = rate_avg.get('rate__avg')
+        hotel.save()
         rating_form.save()
         comment_form.rating = rating_form
         comment_form.save()
+
 
     return redirect('booking:room_detail', room.id)
 
@@ -182,7 +187,6 @@ def room_bookit(request, room_id):
             bookingForm = BookingForm(request.POST)
             if bookingForm.is_valid():
                 booking_form = bookingForm.save(commit=False)
-                #date validations goes here
                 if booking_form.start_date >= booking_form.end_date:
                     return clear_booking_form(request, 'Wrong dates!', hotel, room)
 
@@ -192,13 +196,10 @@ def room_bookit(request, room_id):
                     if booking.start_date <= booking_form.start_date < booking.end_date or booking.start_date < booking_form.end_date <= booking.end_date:
                         return clear_booking_form(request, 'Room is already booked for this dates!', hotel, room)
 
-                #days = booking_form.end_date.day - booking_form.start_date.day
-                #price = days * room.price
                 booking_form.guest = request.user
                 booking_form.room = room
                 booking_form.hotel = hotel
                 booking_form.save()
-                #return render(request, 'booking/room_bookit_confirm.html', {'booking': booking_form, 'price': price })
                 return redirect('booking:booking_confirm', booking_id=booking_form.id)
 
             else:
@@ -282,6 +283,9 @@ def hotel_chain_add(request):
             hotel_chain_form = hotelChainForm.save(commit=False)
             hotel_chain_form.save()
             return redirect('booking:index')
+        else:
+            hotelChainForm = HotelChainForm()
+            return render(request, 'booking/hotel_chain_add.html', {'hotelChainForm': hotelChainForm, 'title': 'Invalid Name'})
 
     else:
         hotelChainForm = HotelChainForm()

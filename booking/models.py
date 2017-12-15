@@ -42,7 +42,7 @@ class Hotel_Chain(models.Model):
 class Hotel(models.Model):
     hotel_chain = models.ForeignKey(Hotel_Chain, blank=True, null=True)
     country_code = CountryField(max_length=100)
-    star_rating = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    star_rating = models.DecimalField(validators=[MinValueValidator(1), MaxValueValidator(10)], max_digits=3, decimal_places=1)
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=100)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
