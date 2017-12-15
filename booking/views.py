@@ -1,4 +1,5 @@
 from django.forms import modelformset_factory
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -8,7 +9,10 @@ def hotels(request):
     hotels = None
     if ('q' in request.GET) and request.GET['q'].strip():
         query = request.GET['q']
-        hotels = Hotel.objects.filter(name__icontains=query)
+        hotels = Hotel.objects.filter(Q(name__icontains=query) |
+                                      Q(city__icontains=query) |
+                                      Q(country_code__icontains=query)
+                                      )
     else:
         hotels = Hotel.objects.all()
     context = {'hotels': hotels}

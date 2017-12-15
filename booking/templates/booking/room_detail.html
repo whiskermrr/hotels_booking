@@ -88,11 +88,14 @@ img {
                         <li><span><i class="glyphicon glyphicon-calendar"></i> {{ comment.date }}</span></li>
                         <li>|</li>
                         <li>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <b>{{ comment.rating.rate }}</b>
+                            {% for i in "xxxxxxxxxx" %}
+                                {% if forloop.counter <= comment.rating.rate %}
+                                    <span class="glyphicon glyphicon-star" style="color: #f2b01e;"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                {% endif %}
+                            {% endfor %}
                         </li>
                     </ul>
                 </div>
