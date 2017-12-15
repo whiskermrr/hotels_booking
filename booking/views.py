@@ -6,18 +6,28 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import *
 
 def hotels(request):
-    hotels = None
+    hotels_list = None
     if ('q' in request.GET) and request.GET['q'].strip():
         query = request.GET['q']
-        hotels = Hotel.objects.filter(Q(name__icontains=query) |
+        hotels_list = Hotel.objects.filter(Q(name__icontains=query) |
                                       Q(city__icontains=query) |
                                       Q(country_code__icontains=query)
                                       )
     else:
-        hotels = Hotel.objects.all()
+        hotels_list = Hotel.objects.all()
+
+    paginator = Paginator(hotels_list, 5)
+    page_var = 'page'
+    page = request.GET.get(page_var)
+    try:
+        hotels = paginator.page('page')
+    except PageNotAnInteger:
+        hotels = paginator.page(1)
+    except EmptyPage:
+        hotels = paginator.page(paginator.num_pages)
+
     context = {'hotels': hotels}
     return render(request, 'booking/hotels.html', context)
-
 
 
 def index(request):
@@ -27,9 +37,19 @@ def index(request):
 
 def hotel_detail(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
-    rooms = Room.objects.filter(hotel=hotel_id)
+    rooms_list = Room.objects.filter(hotel=hotel_id)
     images = Image.objects.filter(hotel=hotel_id)
     image = images[0]
+    paginator = Paginator(rooms_list, 5)
+    page_var = 'page'
+    page = request.GET.get(page_var)
+    try:
+        rooms = paginator.page(page)
+    except PageNotAnInteger:
+        rooms = paginator.page(1)
+    except EmptyPage:
+        rooms = paginator.page(paginator.num_pages)
+
     context = {
         'hotel' : hotel,
         'rooms' : rooms,

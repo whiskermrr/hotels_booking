@@ -41,7 +41,9 @@ img {
             </div>
 
             <div class="hotel_detail">
-                <a href="{% url 'booking:hotel_detail' hotel.id %}"><h2>{{ hotel.name }} {% if hotel.hotel_chain %} ({{ hotel.hotel_chain.chain_name }}) {% endif %} <span class="badge badge-success">{{ hotel.star_rating }}</span></h2></a>
+                <a href="{% url 'booking:hotel_detail' hotel.id %}">
+                    <h2>{{ hotel.name }} {% if hotel.hotel_chain %} ({{ hotel.hotel_chain.chain_name }}) {% endif %}
+                        <span class="badge badge-success">{{ hotel.star_rating }}</span></h2></a>
                 <ul>
                     <li>{{ hotel.address }}</li>
                     <li>{{ hotel.city }}</li>
@@ -58,6 +60,23 @@ img {
 
         <hr/>
         {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if hotels.has_previous %}
+            <a href="?{{ page_var }}={{ hotels.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ hotels.number }} of {{ hotels.paginator.num_pages }}.
+            </span>
+
+            {% if hotels.has_next %}
+                <a href="?{{ page_var }}={{ hotels.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+
     {% else %}
         <h2>There is no hotels in database</h2>
     {% endif %}

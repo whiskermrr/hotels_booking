@@ -131,6 +131,23 @@ img {
                 <hr/>
             </div>
         {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if rooms.has_previous %}
+            <a href="?{{ page_var }}={{ rooms.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ rooms.number }} of {{ rooms.paginator.num_pages }}.
+            </span>
+
+            {% if rooms.has_next %}
+                <a href="?{{ page_var }}={{ rooms.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+
     {% else %}
         <h3>No rooms!</h3>
     {% endif %}
