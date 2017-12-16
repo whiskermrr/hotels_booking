@@ -121,3 +121,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return "{} {} {}".format(self.user.__str__(), self.context.__str__(), self.date)
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name='receiver')
+    content = models.CharField(max_length=500)
+
+    def __str__(self):
+        return "{} {} {}".format(self.sender.__str__(), self.receiver.__str__(), self.content)

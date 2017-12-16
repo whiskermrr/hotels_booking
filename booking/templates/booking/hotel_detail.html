@@ -153,4 +153,10 @@ img {
     {% endif %}
 </div>
 
+{% if request.user.is_authenticated and user.is_superuser %}
+<div style="text-align: center;">
+    <a class="btn btn-lg btn-primary" href="{% url 'booking:hotel_delete' hotel_id=hotel.id %}" role="button">Delete</a>
+</div>
+{% endif %}
+
 {% endblock %}

@@ -1,9 +1,6 @@
 {% extends 'booking/base.html' %}
 {% load crispy_forms_tags %}
 
-{% block style %}
-
-{% endblock %}
 
 {% block content %}
 
@@ -12,6 +9,8 @@
   <div class="col-md-4 col-sm-offset-4">
 
       <h1>Add Room</h1>
+
+      <b style="color: red;">{{ title }}</b>
 
     <form id="room_form" method="post" action=""
           enctype="multipart/form-data">

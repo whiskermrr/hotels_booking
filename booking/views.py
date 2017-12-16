@@ -100,10 +100,10 @@ def comment_add(request, room_id):
         rating_form = ratingForm.save(commit=False)
         rating_form.rate = request.POST.get('rating')
         rating_form.hotel = hotel
+        rating_form.save()
         rate_avg = Rating.objects.filter(hotel_id=rating_form.hotel.id).aggregate(Avg('rate'))
         hotel.star_rating = rate_avg.get('rate__avg')
         hotel.save()
-        rating_form.save()
         comment_form.rating = rating_form
         comment_form.save()
 
@@ -138,26 +138,50 @@ def hotel_add(request):
             hotel_form.save()
 
             for form in formset.cleaned_data:
-                image = form['image']
-                photo = Image(hotel=hotel_form, image=image)
-                photo.save()
+                try:
+                    image = form['image']
+                    photo = Image(hotel=hotel_form, image=image)
+                    photo.save()
+                except KeyError:
+                    pass
 
-            image = formset.cleaned_data[0]['image']
-            hotel_form.avatar = image
-            hotel_form.save()
+            try:
+                image = formset.cleaned_data[0]['image']
+                hotel_form.avatar = image
+                hotel_form.save()
+            except KeyError:
+                hotel_form.delete()
+                return clear_hotel_add_form(request, ImageFormSet, 'Select at least 1 Image!')
 
             hotels = Hotel.objects.all()
             return render(request, 'booking/hotels.html', {'hotels' : hotels})
 
         else:
-            print (hotelForm.errors, formset.errors)
+            return clear_hotel_add_form(request, ImageFormSet, 'Invalid Form!')
 
     else:
-        hotelForm = HotelForm()
-        formset = ImageFormSet(queryset=Image.objects.none())
-        context = {'hotelForm' : hotelForm, 'formset' : formset}
-        return render(request, 'booking/hotel_add.html', context)
+        return clear_hotel_add_form(request, ImageFormSet, '')
 
+
+def clear_hotel_add_form(request, formSet, title):
+    title = title
+    ImageFormSet = formSet
+    hotelForm = HotelForm()
+    formset = ImageFormSet(queryset=Image.objects.none())
+    context = {'hotelForm': hotelForm, 'formset': formset, 'title': title}
+    return render(request, 'booking/hotel_add.html', context)
+
+
+def hotel_delete(request, hotel_id):
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+    hotel.delete()
+    return redirect('booking:hotels')
+
+
+def room_delete(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
+    room.delete()
+    return redirect('booking:index')
 
 
 def room_add(request):
@@ -172,26 +196,37 @@ def room_add(request):
             room_form.save()
 
             for form in formset.cleaned_data:
-                image = form['image']
-                photo = Image(room=room_form, image=image)
-                photo.save()
+                try:
+                    image = form['image']
+                    photo = Image(room=room_form, image=image)
+                    photo.save()
+                except KeyError:
+                    pass
 
-            image = formset.cleaned_data[0]['image']
-            room_form.avatar = image
-            room_form.save()
+            try:
+                image = formset.cleaned_data[0]['image']
+                room_form.avatar = image
+                room_form.save()
+            except KeyError:
+                room_form.delete()
+                return clear_room_add_form(request, ImageFormSet, 'Select at least 1 Image!')
 
-            return render(request, 'booking/index.html', {})
+            return redirect('booking:index')
 
         else:
-            print (roomForm.errors, formset.errors)
+            return clear_room_add_form(request, ImageFormSet, 'Invalid form!')
 
     else:
-        roomForm = RoomForm()
-        formset = ImageFormSet(queryset=Image.objects.none())
-        context = {'roomForm' : roomForm, 'formset' : formset}
-        return render(request, 'booking/room_add.html', context)
+        return clear_room_add_form(request, ImageFormSet, '')
 
 
+def clear_room_add_form(request, formSet, title):
+    title = title
+    ImageFormSet = formSet
+    roomForm = RoomForm()
+    formset = ImageFormSet(queryset=Image.objects.none())
+    context = {'roomForm': roomForm, 'formset': formset, 'title': title}
+    return render(request, 'booking/room_add.html', context)
 
 def user_profile(request, username):
     user = User.objects.get(username=username)

@@ -38,13 +38,13 @@ img {
             <p><b class="bold">Hotel: </b> {{ booking.hotel.name }}</p>
             <h2><b style="color: #ff640c;">Price:  ${{ price }}</b></h2>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-5">
             <form method="post" action="">
                 {% csrf_token %}
                 <input class="btn btn-lg btn-primary" type="submit" name="submit" value="Confirm Booking" />
             </form>
         </div>
-        <div class="col-md-2 col-sm-offset-11">
+        <div class="col-md-3">
             <a class="btn btn-lg btn-primary" href="{% url 'booking:booking_cancel' booking.id %}" role="button">Cancel</a>
         </div>
     </div>
