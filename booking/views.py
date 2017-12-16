@@ -135,6 +135,7 @@ def hotel_add(request):
 
         if hotelForm.is_valid() and formset.is_valid():
             hotel_form = hotelForm.save(commit=False)
+            hotel_form.owner = request.user
             hotel_form.save()
 
             for form in formset.cleaned_data:
@@ -311,12 +312,18 @@ def booking_cancel(request, booking_id):
 
 
 def user_bookings(request, username):
-    bookings = Booking.objects.filter(guest_id=request.user.id).order_by('-booked_date')
+    if request.user.is_superuser:
+        bookings = Booking.objects.filter(hotel__owner_id=request.user.id).order_by('-booked_date')
+    else:
+        bookings = Booking.objects.filter(guest_id=request.user.id).order_by('-booked_date')
     return render(request, 'booking/user_bookings.html', {'bookings': bookings})
 
 
 def user_payments(request, username):
-    payments = Payment.objects.filter(guest_id=request.user.id).order_by('-booking__booked_date')
+    if request.user.is_superuser:
+        payments = Payment.objects.filter(booking__hotel__owner_id=request.user.id).order_by('-booking__booked_date')
+    else:
+        payments = Payment.objects.filter(guest_id=request.user.id).order_by('-booking__booked_date')
     return render(request, 'booking/user_payments.html', {'payments': payments})
 
 
@@ -345,3 +352,4 @@ def hotel_chain_add(request):
     else:
         hotelChainForm = HotelChainForm()
         return render(request, 'booking/hotel_chain_add.html', {'hotelChainForm': hotelChainForm})
+

@@ -13,6 +13,7 @@ class Hotel_Chain(models.Model):
 
 
 class Hotel(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     hotel_chain = models.ForeignKey(Hotel_Chain, blank=True, null=True)
     country_code = CountryField(max_length=100)
     star_rating = models.DecimalField(validators=[MinValueValidator(1), MaxValueValidator(10)],

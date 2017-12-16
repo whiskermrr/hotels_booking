@@ -45,6 +45,7 @@ img {
                     <p><b class="bold"> to: </b> {{ booking.end_date }}</p>
                     <p><b class="bold">Hotel: </b> {{ booking.hotel.name }}</p>
                     <p><b>Description: </b> {{ booking.description }}</p>
+                    {% if request.user.is_superuser %} <p><b>User: </b> {{ booking.guest.username }}</p> {% endif %}
                 </div>
                 <div class="col-md-2">
                     <b>Booked:<br/> {{ booking.booked_date }}</b>
