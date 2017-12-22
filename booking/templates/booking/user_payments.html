@@ -43,7 +43,7 @@ img {
                 <div class="col-md-4">
                     <p><b class="bold">from: </b>{{ payment.booking.start_date }}</p>
                     <p><b class="bold"> to: </b> {{ payment.booking.end_date }}</p>
-                    <p><b class="bold">Hotel: </b> {{ booking.hotel.name }}</p>
+                    <p><b class="bold">Hotel: </b> {{ payment.booking.hotel.name }}</p>
                     <p><b style="color: #ff640c;">Price: </b> ${{ payment.amount }}</p>
                     {% if request.user.is_superuser %} <p><b>User: </b> {{ payment.guest.username }}</p> {% endif %}
                 </div>
