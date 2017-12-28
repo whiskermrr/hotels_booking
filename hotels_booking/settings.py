@@ -157,7 +157,7 @@ STATICFILES_DIRS = [
 ]
 
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "hotels_booking/static_cdn")
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "hotels_booking/media_cdn")
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
