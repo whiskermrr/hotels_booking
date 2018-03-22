@@ -38,8 +38,6 @@ def index(request):
 def hotel_detail(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
     rooms_list = Room.objects.filter(hotel=hotel_id)
-    images = Image.objects.filter(hotel=hotel_id)
-    image = images[0]
     paginator = Paginator(rooms_list, 5)
     page_var = 'page'
     page = request.GET.get(page_var)
@@ -53,7 +51,6 @@ def hotel_detail(request, hotel_id):
     context = {
         'hotel' : hotel,
         'rooms' : rooms,
-        'image' : image,
     }
     return render(request, 'booking/hotel_detail.html', context)
 
